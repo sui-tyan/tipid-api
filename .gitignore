@@ -1,0 +1,10 @@
+/bin/
+/*.exe
+/*.out
+/*.app
+
+*.exe
+*.test
+*.prof
+
+.env
