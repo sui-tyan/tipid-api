@@ -1,6 +1,9 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/brianvoe/gofakeit/v7"
+	"github.com/gin-gonic/gin"
+)
 
 func AddExpenseRoutes(router *gin.RouterGroup) {
 
@@ -11,19 +14,25 @@ func AddExpenseRoutes(router *gin.RouterGroup) {
 	router.GET("/recent", func(c *gin.Context) {
 
 		type ExpenseData struct {
-			Label  string  `json:"label"`
-			Amount float64 `json:"amount"`
+			ExpenseLabel string  `json:"expenseLabel"`
+			ExpenseValue float64 `json:"expenseValue"`
+			Fill         string  `json:"fill"`
 		}
 
-		recent_expenses := []ExpenseData{
-			{Label: "Food", Amount: 150.75},
-			{Label: "Travel", Amount: 80.50},
-			{Label: "Guitar", Amount: 60.00},
-			{Label: "Transaction Fees", Amount: 45.25},
-			{Label: "Other", Amount: 120.00},
+		var recentExpenses []ExpenseData
+
+		itemLength := gofakeit.Number(1, 30)
+
+		for i := 0; i < itemLength; i++ {
+			dummyData := ExpenseData{
+				ExpenseLabel: gofakeit.ProductName(),
+				ExpenseValue: float64(gofakeit.Number(100, 500)),
+				Fill:         gofakeit.HexColor(),
+			}
+			recentExpenses = append(recentExpenses, dummyData)
 		}
 
-		c.JSON(200, gin.H{"data": recent_expenses})
+		c.JSON(200, gin.H{"data": recentExpenses})
 	})
 
 }
